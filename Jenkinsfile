@@ -15,7 +15,11 @@ pipeline {
 
         stage('Terraform Init') {
             steps {
-                sh 'terraform init'
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'jenkins-user' // this needs tp ne changed before runtime to match the jenkins credentials
+                ]]) {
+                    sh 'terraform init'
             }
         }
 
